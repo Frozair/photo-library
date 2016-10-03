@@ -6,9 +6,10 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.newrdev.photolibrary.MainActivity">
+    tools:context="com.newrdev.photolibrary.ui.home.HomeActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
