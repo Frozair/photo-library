@@ -1,6 +1,7 @@
 package com.newrdev.photolibrary.data.net;
 
 import com.newrdev.photolibrary.data.entity.PhotoEntity;
+import com.newrdev.photolibrary.util.Constants;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class ApiService {
 
     public ApiService() {
         api = new Retrofit.Builder()
-                .baseUrl("http://jsonplaceholder.typicode.com/")
+                .baseUrl(Constants.API_BASE)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build()
