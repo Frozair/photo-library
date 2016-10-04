@@ -27,7 +27,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
-        this.presenter = new HomePresenterImpl();
+        this.presenter = new HomePresenter();
 
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
