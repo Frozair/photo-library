@@ -20,54 +20,59 @@ import timber.log.Timber;
  * Created by newrdev on 10/4/16.
  */
 
-public class CloudRecyclerAdapter extends RecyclerView.Adapter<CloudRecyclerAdapter.MyViewHolder> {
+public class CloudRecyclerAdapter extends RecyclerView.Adapter<CloudRecyclerAdapter.ViewHolder> {
     private List<Album> albums;
+    private HomeView homeView;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView txtView;
-        public ImageView imageView;
-
-        public MyViewHolder(View view) {
-            super(view);
-            txtView = (TextView) view.findViewById(R.id.titleTextView);
-            imageView = (ImageView) view.findViewById(R.id.previewImageView);
-
-        }
-    }
-
-    public CloudRecyclerAdapter(List<Album> albums) {
+    public CloudRecyclerAdapter(List<Album> albums, HomeView homeView) {
         this.albums = albums;
+        this.homeView = homeView;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cloud_album_view, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         Album album = albums.get(position);
         String text = "Album " + album.getId().toString();
-        holder.txtView.setText(text);
+        holder.textView.setText(text);
 
-        Timber.d(album.getPhotos().get(0).getThumbnailUrl());
         Glide.with(holder.itemView.getContext())
                 .load(album.getPhotos().get(0).getThumbnailUrl())
                 .into(holder.imageView);
 
-        holder.txtView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(holder.itemView.getContext(), holder.txtView.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+
+        holder.album = album;
     }
 
     @Override
     public int getItemCount() {
         return this.albums.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView textView;
+        public ImageView imageView;
+        public Album album;
+
+        public ViewHolder(View view) {
+            super(view);
+            textView = (TextView) view.findViewById(R.id.titleTextView);
+            imageView = (ImageView) view.findViewById(R.id.previewImageView);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CloudRecyclerAdapter.this.homeView.onAlbumClick(album);
+                }
+            });
+        }
+
     }
 }

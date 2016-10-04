@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
+
 import com.newrdev.photolibrary.BuildConfig;
 import com.newrdev.photolibrary.R;
 import com.newrdev.photolibrary.data.model.Album;
@@ -39,13 +41,17 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     @Override
     public void onCloudAlbumsFetched(List<Album> albums) {
-        Timber.d("Total albums: %d", albums.size());
-        cloudRecyclerView.setAdapter(new CloudRecyclerAdapter(albums));
+        cloudRecyclerView.setAdapter(new CloudRecyclerAdapter(albums, this));
     }
 
     @Override
     public void onLocalPhotosFetched() {
 
+    }
+
+    @Override
+    public void onAlbumClick(Album album) {
+        Toast.makeText(this, "Album " + album.getId(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

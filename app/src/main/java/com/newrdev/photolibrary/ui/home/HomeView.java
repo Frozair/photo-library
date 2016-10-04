@@ -12,4 +12,5 @@ import java.util.List;
 public interface HomeView {
     void onCloudAlbumsFetched(List<Album> albums);
     void onLocalPhotosFetched();
+    void onAlbumClick(Album album);
 }
