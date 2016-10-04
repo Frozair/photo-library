@@ -1,14 +1,19 @@
 package com.newrdev.photolibrary.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by newrdev on 10/3/16.
  */
 
-public class Photo {
+public class Photo implements Parcelable {
     private Integer id;
     private String title;
     private String url;
     private String thumbnailUrl;
+
+    public Photo() { }
 
     public Integer getId() {
         return id;
@@ -40,5 +45,35 @@ public class Photo {
 
     public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.url);
+        dest.writeString(this.thumbnailUrl);
+    }
+
+    public static final Parcelable.Creator<Photo> CREATOR = new Parcelable.Creator<Photo>() {
+        public Photo createFromParcel(Parcel in) {
+            return new Photo(in);
+        }
+
+        public Photo[] newArray(int size) {
+            return new Photo[size];
+        }
+    };
+
+    private Photo(Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.url = in.readString();
+        this.thumbnailUrl = in.readString();
     }
 }

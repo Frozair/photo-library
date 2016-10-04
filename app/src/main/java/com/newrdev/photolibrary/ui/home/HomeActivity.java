@@ -1,5 +1,6 @@
 package com.newrdev.photolibrary.ui.home;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,9 @@ import android.widget.Toast;
 import com.newrdev.photolibrary.BuildConfig;
 import com.newrdev.photolibrary.R;
 import com.newrdev.photolibrary.data.model.Album;
+import com.newrdev.photolibrary.ui.album.AlbumActivity;
+import com.newrdev.photolibrary.util.Constants;
+
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +56,11 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     @Override
     public void onAlbumClick(Album album) {
         Toast.makeText(this, "Album " + album.getId(), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this, AlbumActivity.class);
+        intent.putExtra(Constants.ALBUM_KEY, album);
+
+        this.startActivity(intent);
     }
 
     @Override
