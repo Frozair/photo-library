@@ -6,7 +6,6 @@ import com.newrdev.photolibrary.data.entity.PhotoEntity;
 import com.newrdev.photolibrary.data.model.Album;
 import com.newrdev.photolibrary.data.model.Photo;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,9 @@ public class PhotoEntityDataMapper {
             Integer albumId = photoEntity.getAlbumId();
 
             if( !albumMap.containsKey(albumId) ) {
-                albumMap.put(albumId, new Album());
+                Album album = new Album();
+                album.setId(albumId);
+                albumMap.put(albumId, album);
             }
 
             // add photo

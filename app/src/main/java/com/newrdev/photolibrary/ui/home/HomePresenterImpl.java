@@ -6,6 +6,7 @@ import com.newrdev.photolibrary.data.model.Album;
 import com.newrdev.photolibrary.data.net.ApiService;
 import com.newrdev.photolibrary.ui.base.BasePresenterImpl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class HomePresenterImpl extends BasePresenterImpl<HomeView> implements Ho
             PhotoEntityDataMapper mapper = new PhotoEntityDataMapper();
             Collection<Album> albums = mapper.transform(photoEntities);
 
-            HomePresenterImpl.this.view().onCloudAlbumsFetched(albums);
+            HomePresenterImpl.this.view().onCloudAlbumsFetched(new ArrayList<>(albums));
         }
     }
 }
