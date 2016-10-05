@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -21,10 +22,10 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class HomeActivity extends AppCompatActivity implements HomeView {
-
     private HomePresenter presenter;
     private boolean albumsLoaded = false;
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.cloudRecyclerView) RecyclerView cloudRecyclerView;
     @BindView(R.id.localRecyclerView) RecyclerView localRecyclerView;
     @BindView(R.id.progressBarAlbum) ProgressBar albumProgressBar;
@@ -41,6 +42,10 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         cloudRecyclerView.setLayoutManager(horizontalLayoutManagaer);
 //        localRecyclerView.setLayoutManager(horizontalLayoutManagaer);
+
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
