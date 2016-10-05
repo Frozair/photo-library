@@ -9,22 +9,27 @@ import android.widget.TextView;
 import com.newrdev.photolibrary.R;
 import com.newrdev.photolibrary.data.model.Album;
 import com.newrdev.photolibrary.data.model.Photo;
+import com.newrdev.photolibrary.data.net.PhotoService;
 import com.newrdev.photolibrary.util.Constants;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by newrdev on 10/4/16.
  */
 
-public class SlideShowActivity extends Activity implements ViewPager.OnPageChangeListener{
+public class SlideShowActivity extends Activity implements ViewPager.OnPageChangeListener, SlideShowView {
     @BindView(R.id.pager) ViewPager pager;
     @BindView(R.id.pageCount) TextView pageCountTextView;
     @BindView(R.id.title) TextView titleTextView;
 
+    private SlideShowPresenter presenter;
     private List<Photo> photos;
 
     @Override
@@ -33,6 +38,7 @@ public class SlideShowActivity extends Activity implements ViewPager.OnPageChang
         setContentView(R.layout.activity_slide_show);
 
         ButterKnife.bind(this);
+        this.presenter = new SlideShowPresenter();
 
         Bundle extras = getIntent().getExtras();
 
@@ -50,6 +56,20 @@ public class SlideShowActivity extends Activity implements ViewPager.OnPageChang
 
             displayPhoto(position);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        this.presenter.bindView(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        this.presenter.bindView(this);
     }
 
     private void displayPhoto(int position) {
@@ -72,5 +92,12 @@ public class SlideShowActivity extends Activity implements ViewPager.OnPageChang
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void onSavePhotoClick() {
+        int pos = pager.getCurrentItem();
+
+        this.presenter.downloadAndSavePhoto(this.photos.get(pos));
     }
 }

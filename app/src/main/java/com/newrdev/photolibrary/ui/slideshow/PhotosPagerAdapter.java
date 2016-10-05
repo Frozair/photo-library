@@ -25,12 +25,12 @@ import java.util.List;
 
 public class PhotosPagerAdapter extends PagerAdapter {
     private List<Photo> photos;
-    private Context context;
+    private SlideShowView slideShowView;
 
-    public PhotosPagerAdapter(List<Photo> photos, Context context)
+    public PhotosPagerAdapter(List<Photo> photos, SlideShowView slideShowView)
     {
         this.photos = photos;
-        this.context = context;
+        this.slideShowView = slideShowView;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PhotosPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View itemView = LayoutInflater.from(container.getContext())
+        final View itemView = LayoutInflater.from(container.getContext())
                 .inflate(R.layout.photo_holder_view, container, false);
 
         System.out.println("Instantiating item: " + position);
@@ -57,7 +57,7 @@ public class PhotosPagerAdapter extends PagerAdapter {
 
         Photo photo = this.photos.get(position);
 
-        Glide.with(this.context)
+        Glide.with(itemView.getContext())
                 .load(photo.getUrl())
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
@@ -74,6 +74,13 @@ public class PhotosPagerAdapter extends PagerAdapter {
                 .into(imageView);
 
         container.addView(itemView);
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                slideShowView.onSavePhotoClick();
+            }
+        });
 
         return itemView;
     }

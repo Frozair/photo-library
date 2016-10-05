@@ -5,9 +5,12 @@ import com.newrdev.photolibrary.util.Constants;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 import rx.Observable;
 import retrofit2.http.GET;
 
@@ -16,10 +19,9 @@ import retrofit2.http.GET;
  */
 
 public class ApiService {
-    private PhotoApi api;
 
-    public ApiService() {
-        api = new Retrofit.Builder()
+    public static PhotoApi getApi(){
+        return new Retrofit.Builder()
                 .baseUrl(Constants.API_BASE)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -27,13 +29,12 @@ public class ApiService {
                 .create(PhotoApi.class);
     }
 
-    public PhotoApi getApi(){
-        return api;
-    }
-
-
     public interface PhotoApi {
         @GET("/photos")
         Observable<List<PhotoEntity>> getPhotos();
+
+        @GET
+        @Streaming
+        Observable<ResponseBody> downloadFile(@Url String url);
     }
 }

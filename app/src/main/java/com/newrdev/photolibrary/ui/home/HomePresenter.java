@@ -20,14 +20,8 @@ import rx.schedulers.Schedulers;
 
 public class HomePresenter extends BasePresenter<HomeView> {
 
-    private ApiService apiService;
-
-    public HomePresenter() {
-        this.apiService = new ApiService();
-    }
-
     public void fetchCloudAlbums() {
-        apiService.getApi()
+        ApiService.getApi()
                 .getPhotos()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
