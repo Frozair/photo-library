@@ -22,9 +22,11 @@ import java.util.List;
 
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder> {
     private List<Photo> photos;
+    private AlbumView albumView;
 
-    public PhotosAdapter(List<Photo> photos) {
+    public PhotosAdapter(List<Photo> photos, AlbumView albumView) {
         this.photos = photos;
+        this.albumView = albumView;
     }
 
     @Override
@@ -38,8 +40,8 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Photo photo = this.photos.get(position);
-        System.out.println("Adding photo: " + position);
         holder.progressBar.setVisibility(View.VISIBLE);
+        holder.position = position;
 
         Glide.with(holder.itemView.getContext())
                 .load(photo.getThumbnailUrl())
@@ -66,11 +68,19 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView thumbnail;
         public ProgressBar progressBar;
+        public int position;
 
         public ViewHolder(View view) {
             super(view);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PhotosAdapter.this.albumView.onPhotoClick(position);
+                }
+            });
         }
     }
 }
