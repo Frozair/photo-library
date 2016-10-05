@@ -13,12 +13,17 @@ import android.widget.Toast;
 import com.newrdev.photolibrary.BuildConfig;
 import com.newrdev.photolibrary.R;
 import com.newrdev.photolibrary.data.model.Album;
+import com.newrdev.photolibrary.data.model.Photo;
 import com.newrdev.photolibrary.ui.album.AlbumActivity;
+import com.newrdev.photolibrary.ui.slideshow.SlideShowActivity;
 import com.newrdev.photolibrary.util.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmResults;
 import timber.log.Timber;
 
 public class HomeActivity extends AppCompatActivity implements HomeView {
@@ -29,6 +34,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     @BindView(R.id.cloudRecyclerView) RecyclerView cloudRecyclerView;
     @BindView(R.id.localRecyclerView) RecyclerView localRecyclerView;
     @BindView(R.id.progressBarAlbum) ProgressBar albumProgressBar;
+    @BindView(R.id.progressBarLocal) ProgressBar localProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +44,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
         this.presenter = new HomePresenter();
 
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        cloudRecyclerView.setLayoutManager(horizontalLayoutManagaer);
-//        localRecyclerView.setLayoutManager(horizontalLayoutManagaer);
+        cloudRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        localRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -60,8 +64,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     }
 
     @Override
-    public void onLocalPhotosFetched() {
-
+    public void onLocalPhotosFetched(List<Photo> photos) {
+        localRecyclerView.setAdapter(new LocalPhotosAdapter(photos, this));
+        this.localProgressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -70,6 +75,19 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
         Intent intent = new Intent(this, AlbumActivity.class);
         intent.putExtra(Constants.ALBUM_KEY, album);
+
+        this.startActivity(intent);
+    }
+
+    @Override
+    public void onPhotoClick(List<Photo> photos, int photoPosition) {
+        Toast.makeText(this, "Photo idx: " + photoPosition, Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this, SlideShowActivity.class);
+        intent.putExtra(Constants.ALBUM_KEY, new ArrayList<>(photos));
+        intent.putExtra(Constants.PHOTO_KEY, photoPosition);
+
+        this.startActivity(intent);
 
         this.startActivity(intent);
     }
@@ -84,6 +102,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
             this.albumProgressBar.setVisibility(View.VISIBLE);
             this.presenter.fetchCloudAlbums();
         }
+
+        this.localProgressBar.setVisibility(View.VISIBLE);
+        this.presenter.fetchLocalPhotos();
     }
 
     @Override

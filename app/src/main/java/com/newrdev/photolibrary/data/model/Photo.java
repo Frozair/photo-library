@@ -3,11 +3,17 @@ package com.newrdev.photolibrary.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import io.realm.RealmModel;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
+
 /**
  * Created by newrdev on 10/3/16.
  */
 
-public class Photo implements Parcelable {
+@RealmClass
+public class Photo implements Parcelable, RealmModel {
+    @PrimaryKey
     private Integer id;
     private String title;
     private String url;

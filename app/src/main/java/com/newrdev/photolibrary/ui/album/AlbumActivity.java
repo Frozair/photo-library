@@ -16,6 +16,8 @@ import com.newrdev.photolibrary.ui.slideshow.SlideShowActivity;
 import com.newrdev.photolibrary.util.Constants;
 
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
@@ -77,7 +79,7 @@ public class AlbumActivity extends AppCompatActivity implements AlbumView {
     public void onPhotoClick(int photoPosition) {
 
         Intent intent = new Intent(this, SlideShowActivity.class);
-        intent.putExtra(Constants.ALBUM_KEY, album);
+        intent.putExtra(Constants.ALBUM_KEY, new ArrayList<>(this.album.getPhotos()));
         intent.putExtra(Constants.PHOTO_KEY, photoPosition);
 
         this.startActivity(intent);

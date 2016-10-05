@@ -4,6 +4,7 @@ import com.newrdev.photolibrary.data.model.Photo;
 import com.newrdev.photolibrary.data.net.PhotoService;
 import com.newrdev.photolibrary.ui.base.BasePresenter;
 
+import io.realm.Realm;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -31,6 +32,12 @@ public class SlideShowPresenter extends BasePresenter<SlideShowView> {
 
                     @Override
                     public void onNext(Photo photo) {
+                        Realm realm = Realm.getDefaultInstance();
+                        realm.beginTransaction();
+
+                        realm.copyToRealmOrUpdate(photo);
+
+                        realm.commitTransaction();
                     }
                 });
     }

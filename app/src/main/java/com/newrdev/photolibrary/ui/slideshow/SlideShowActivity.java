@@ -44,8 +44,7 @@ public class SlideShowActivity extends Activity implements ViewPager.OnPageChang
 
         if( extras != null ) {
 
-            Album album = (Album) extras.get(Constants.ALBUM_KEY);
-            photos = album.getPhotos();
+            photos = extras.getParcelableArrayList(Constants.ALBUM_KEY);
 
             int position = extras.getInt(Constants.PHOTO_KEY);
 

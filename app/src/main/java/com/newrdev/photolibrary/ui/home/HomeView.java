@@ -1,6 +1,7 @@
 package com.newrdev.photolibrary.ui.home;
 
 import com.newrdev.photolibrary.data.model.Album;
+import com.newrdev.photolibrary.data.model.Photo;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 
 public interface HomeView {
     void onCloudAlbumsFetched(List<Album> albums);
-    void onLocalPhotosFetched();
+    void onLocalPhotosFetched(List<Photo> photos);
     void onAlbumClick(Album album);
+    void onPhotoClick(List<Photo> photos, int photoPosition);
 }
