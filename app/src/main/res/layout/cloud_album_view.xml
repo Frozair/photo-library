@@ -6,11 +6,27 @@
     android:padding="15dp">
 
 
-    <ImageView
-        android:gravity="center_horizontal"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:id="@+id/previewImageView" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/thumbnail" />
+
+        <ProgressBar
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle" />
+    </RelativeLayout>
 
     <TextView
         android:gravity="center_horizontal"

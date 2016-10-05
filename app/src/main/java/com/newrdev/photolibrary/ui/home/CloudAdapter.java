@@ -5,26 +5,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.newrdev.photolibrary.R;
 import com.newrdev.photolibrary.data.model.Album;
 
 import java.util.List;
 
-import timber.log.Timber;
-
 /**
  * Created by newrdev on 10/4/16.
  */
 
-public class CloudRecyclerAdapter extends RecyclerView.Adapter<CloudRecyclerAdapter.ViewHolder> {
+public class CloudAdapter extends RecyclerView.Adapter<CloudAdapter.ViewHolder> {
     private List<Album> albums;
     private HomeView homeView;
 
-    public CloudRecyclerAdapter(List<Album> albums, HomeView homeView) {
+    public CloudAdapter(List<Album> albums, HomeView homeView) {
         this.albums = albums;
         this.homeView = homeView;
     }
@@ -42,10 +43,23 @@ public class CloudRecyclerAdapter extends RecyclerView.Adapter<CloudRecyclerAdap
         Album album = albums.get(position);
         String text = "Album " + album.getId().toString();
         holder.textView.setText(text);
+        holder.progressBar.setVisibility(View.VISIBLE);
 
         Glide.with(holder.itemView.getContext())
                 .load(album.getPhotos().get(0).getThumbnailUrl())
-                .into(holder.imageView);
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        holder.progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                .into(holder.thumbnail);
 
 
         holder.album = album;
@@ -58,18 +72,20 @@ public class CloudRecyclerAdapter extends RecyclerView.Adapter<CloudRecyclerAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
-        public ImageView imageView;
+        public ImageView thumbnail;
         public Album album;
+        public ProgressBar progressBar;
 
         public ViewHolder(View view) {
             super(view);
             textView = (TextView) view.findViewById(R.id.titleTextView);
-            imageView = (ImageView) view.findViewById(R.id.previewImageView);
+            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CloudRecyclerAdapter.this.homeView.onAlbumClick(album);
+                    CloudAdapter.this.homeView.onAlbumClick(album);
                 }
             });
         }

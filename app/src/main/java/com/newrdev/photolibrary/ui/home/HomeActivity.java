@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.newrdev.photolibrary.BuildConfig;
@@ -21,9 +23,11 @@ import timber.log.Timber;
 public class HomeActivity extends AppCompatActivity implements HomeView {
 
     private HomePresenter presenter;
+    private boolean albumsLoaded = false;
 
     @BindView(R.id.cloudRecyclerView) RecyclerView cloudRecyclerView;
     @BindView(R.id.localRecyclerView) RecyclerView localRecyclerView;
+    @BindView(R.id.progressBarAlbum) ProgressBar albumProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     @Override
     public void onCloudAlbumsFetched(List<Album> albums) {
-        cloudRecyclerView.setAdapter(new CloudRecyclerAdapter(albums, this));
+        cloudRecyclerView.setAdapter(new CloudAdapter(albums, this));
+        this.albumProgressBar.setVisibility(View.GONE);
+        this.albumsLoaded = true;
     }
 
     @Override
@@ -69,8 +75,10 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
         this.presenter.bindView(this);
 
-        // TODO - Check if we already cached this, and don't call this
-        this.presenter.fetchCloudAlbums();
+        if( !this.albumsLoaded ) {
+            this.albumProgressBar.setVisibility(View.VISIBLE);
+            this.presenter.fetchCloudAlbums();
+        }
     }
 
     @Override
