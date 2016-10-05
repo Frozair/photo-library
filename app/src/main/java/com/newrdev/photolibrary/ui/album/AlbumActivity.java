@@ -2,6 +2,9 @@ package com.newrdev.photolibrary.ui.album;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.newrdev.photolibrary.BuildConfig;
 import com.newrdev.photolibrary.R;
@@ -27,10 +30,16 @@ public class AlbumActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
 
-        if( extras != null )
-        {
+        if( extras != null ) {
             Album album = (Album) extras.get(Constants.ALBUM_KEY);
-            Timber.i("Album %d has %d photos", album.getId(), album.getPhotos().size());
+
+            PhotosAdapter adapter = new PhotosAdapter(album.getPhotos());
+
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.albumRecyclerView);
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(adapter);
         }
     }
 }
