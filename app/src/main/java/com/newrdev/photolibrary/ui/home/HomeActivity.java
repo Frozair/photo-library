@@ -10,9 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.newrdev.photolibrary.BuildConfig;
 import com.newrdev.photolibrary.R;
 import com.newrdev.photolibrary.data.model.Album;
 import com.newrdev.photolibrary.data.model.Photo;
@@ -25,9 +22,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.realm.Realm;
-import io.realm.RealmResults;
-import timber.log.Timber;
 
 public class HomeActivity extends AppCompatActivity implements HomeView {
     private HomePresenter presenter;
@@ -54,10 +48,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-        }
-
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
         }
     }
 
@@ -137,6 +127,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     protected void onPause() {
         super.onPause();
 
-        this.presenter.bindView(this);
+        this.presenter.unbindView();
     }
 }

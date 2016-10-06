@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

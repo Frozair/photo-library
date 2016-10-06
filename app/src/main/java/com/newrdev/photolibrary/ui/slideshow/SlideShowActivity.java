@@ -136,7 +136,7 @@ public class SlideShowActivity extends AppCompatActivity implements ViewPager.On
     protected void onPause() {
         super.onPause();
 
-        this.presenter.bindView(this);
+        this.presenter.unbindView();
     }
 
     private void displayPhoto(int position) {
