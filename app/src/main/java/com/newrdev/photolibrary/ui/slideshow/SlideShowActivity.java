@@ -133,8 +133,8 @@ public class SlideShowActivity extends AppCompatActivity implements ViewPager.On
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
 
         this.presenter.unbindView();
     }
