@@ -1,5 +1,8 @@
 package com.newrdev.photolibrary.ui.slideshow;
 
+import android.widget.Toast;
+
+import com.newrdev.photolibrary.PhotoLibraryApplication;
 import com.newrdev.photolibrary.data.model.Photo;
 import com.newrdev.photolibrary.data.net.PhotoService;
 import com.newrdev.photolibrary.ui.base.BasePresenter;
@@ -17,6 +20,8 @@ public class SlideShowPresenter extends BasePresenter<SlideShowView> {
 
     public void downloadAndSavePhoto(Photo photo)
     {
+        PhotoLibraryApplication.getInstance().showShortToast("Downloading...");
+
         PhotoService.downloadPhoto(photo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -28,6 +33,8 @@ public class SlideShowPresenter extends BasePresenter<SlideShowView> {
 
                     @Override
                     public void onError(Throwable e) {
+                        PhotoLibraryApplication.getInstance()
+                                .showLongToast(e.getMessage());
                     }
 
                     @Override
@@ -36,6 +43,9 @@ public class SlideShowPresenter extends BasePresenter<SlideShowView> {
                         realm.beginTransaction();
 
                         realm.copyToRealmOrUpdate(photo);
+
+                        PhotoLibraryApplication.getInstance()
+                                .showLongToast("Photo ID: " + photo.getId() + " download complete!");
 
                         realm.commitTransaction();
                     }

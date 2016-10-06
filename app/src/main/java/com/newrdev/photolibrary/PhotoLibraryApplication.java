@@ -1,6 +1,7 @@
 package com.newrdev.photolibrary;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -27,5 +28,13 @@ public class PhotoLibraryApplication extends Application {
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
+    }
+
+    public void showShortToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showLongToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -32,7 +32,7 @@ public class DownloadPhoto implements Job<Photo> {
             @Override
             public Photo call(Photo photo) {
 
-                File rootFile = new File(PhotoLibraryApplication.getInstance().getExternalFilesDir(null), "files");
+                File rootFile = new File(PhotoLibraryApplication.getInstance().getExternalFilesDir(null), "photos");
 
                 if(!rootFile.exists() && !rootFile.mkdirs()) {
                     throw Exceptions.propagate(new Throwable("Could not write, please ensure enabled the proper permissions."));
