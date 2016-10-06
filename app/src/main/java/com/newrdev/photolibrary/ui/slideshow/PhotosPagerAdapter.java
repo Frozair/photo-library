@@ -75,13 +75,6 @@ public class PhotosPagerAdapter extends PagerAdapter {
 
         container.addView(itemView);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                slideShowView.onSavePhotoClick();
-            }
-        });
-
         return itemView;
     }
 

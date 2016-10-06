@@ -5,5 +5,4 @@ package com.newrdev.photolibrary.ui.slideshow;
  */
 
 public interface SlideShowView {
-    void onSavePhotoClick();
 }

@@ -1,37 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="@android:color/black">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true">
-    </android.support.v4.view.ViewPager>
+        android:layout_height="match_parent">
 
-    <TextView
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="384dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/appBarLayout"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <TextView
         android:id="@+id/pageCount"
-        android:layout_width="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/default_text_size"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
         android:text="count"/>
 
-    <TextView
-        android:id="@+id/title"
+        <com.newrdev.photolibrary.ui.slideshow.WrapContentHeightPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        </com.newrdev.photolibrary.ui.slideshow.WrapContentHeightPager>
+
+        <TextView
+            android:id="@+id/title"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:textColor="@android:color/white"
+            android:text="title"
+            android:textSize="@dimen/default_text_size"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:layout_centerHorizontal="true"
-        android:text="title"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:id="@+id/downloadCloudButton"
+        android:tint="@android:color/white"
+        android:src="@drawable/ic_cloud_download_black_24px"
+        app:layout_anchorGravity="bottom|right|end" />
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

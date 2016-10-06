@@ -2,8 +2,13 @@ package com.newrdev.photolibrary.ui.slideshow;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.newrdev.photolibrary.R;
@@ -16,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -24,10 +30,11 @@ import rx.schedulers.Schedulers;
  * Created by newrdev on 10/4/16.
  */
 
-public class SlideShowActivity extends Activity implements ViewPager.OnPageChangeListener, SlideShowView {
+public class SlideShowActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SlideShowView {
     @BindView(R.id.pager) ViewPager pager;
     @BindView(R.id.pageCount) TextView pageCountTextView;
     @BindView(R.id.title) TextView titleTextView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     private SlideShowPresenter presenter;
     private List<Photo> photos;
@@ -39,6 +46,12 @@ public class SlideShowActivity extends Activity implements ViewPager.OnPageChang
 
         ButterKnife.bind(this);
         this.presenter = new SlideShowPresenter();
+
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle extras = getIntent().getExtras();
 
@@ -55,6 +68,13 @@ public class SlideShowActivity extends Activity implements ViewPager.OnPageChang
 
             displayPhoto(position);
         }
+
+    }
+
+    @OnClick(R.id.downloadCloudButton)
+    public void downloadPhoto() {
+        int pos = pager.getCurrentItem();
+        this.presenter.downloadAndSavePhoto(this.photos.get(pos));
     }
 
     @Override
@@ -76,6 +96,8 @@ public class SlideShowActivity extends Activity implements ViewPager.OnPageChang
 
         Photo photo = photos.get(position);
         titleTextView.setText(photo.getTitle());
+
+        getSupportActionBar().setTitle("Photo " + photo.getId());
     }
 
     @Override
@@ -94,9 +116,13 @@ public class SlideShowActivity extends Activity implements ViewPager.OnPageChang
     }
 
     @Override
-    public void onSavePhotoClick() {
-        int pos = pager.getCurrentItem();
-
-        this.presenter.downloadAndSavePhoto(this.photos.get(pos));
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
