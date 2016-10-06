@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.newrdev.photolibrary.R;
@@ -61,6 +62,12 @@ public class SlideShowActivity extends AppCompatActivity implements ViewPager.On
 
             int position = extras.getInt(Constants.PHOTO_KEY);
 
+            Constants.SlideShowType slideShowType = (Constants.SlideShowType) extras.get(Constants.SLIDE_SHOW_TYPE_KEY);
+
+            if( slideShowType == Constants.SlideShowType.LOCAL ) {
+                findViewById(R.id.downloadCloudButton).setVisibility(View.GONE);
+            }
+
             PhotosPagerAdapter adapter = new PhotosPagerAdapter(photos, this);
             pager.setAdapter(adapter);
             pager.addOnPageChangeListener(this);
@@ -97,7 +104,7 @@ public class SlideShowActivity extends AppCompatActivity implements ViewPager.On
         Photo photo = photos.get(position);
         titleTextView.setText(photo.getTitle());
 
-        getSupportActionBar().setTitle("Photo " + photo.getId());
+        getSupportActionBar().setTitle("Photo ID: " + photo.getId());
     }
 
     @Override

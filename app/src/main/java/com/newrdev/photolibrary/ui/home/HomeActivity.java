@@ -86,6 +86,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
         Intent intent = new Intent(this, AlbumActivity.class);
         intent.putExtra(Constants.ALBUM_KEY, album);
+        intent.putExtra(Constants.SLIDE_SHOW_TYPE_KEY, Constants.SlideShowType.CLOUD);
 
         this.startActivity(intent);
     }
@@ -97,6 +98,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         Intent intent = new Intent(this, SlideShowActivity.class);
         intent.putExtra(Constants.ALBUM_KEY, new ArrayList<>(photos));
         intent.putExtra(Constants.PHOTO_KEY, photoPosition);
+        intent.putExtra(Constants.SLIDE_SHOW_TYPE_KEY, Constants.SlideShowType.LOCAL);
 
         this.startActivity(intent);
     }
