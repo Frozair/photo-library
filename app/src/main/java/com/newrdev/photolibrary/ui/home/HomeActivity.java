@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.newrdev.photolibrary.BuildConfig;
@@ -35,6 +36,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     @BindView(R.id.localRecyclerView) RecyclerView localRecyclerView;
     @BindView(R.id.progressBarAlbum) ProgressBar albumProgressBar;
     @BindView(R.id.progressBarLocal) ProgressBar localProgressBar;
+    @BindView(R.id.localEmptyTextView) TextView localEmptyTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +61,23 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     @Override
     public void onCloudAlbumsFetched(List<Album> albums) {
         cloudRecyclerView.setAdapter(new CloudAdapter(albums, this));
-        this.albumProgressBar.setVisibility(View.GONE);
-        this.albumsLoaded = true;
+        albumProgressBar.setVisibility(View.GONE);
+        albumsLoaded = true;
     }
 
     @Override
     public void onLocalPhotosFetched(List<Photo> photos) {
-        localRecyclerView.setAdapter(new LocalPhotosAdapter(photos, this));
-        this.localProgressBar.setVisibility(View.GONE);
+        if( photos.size() > 0 ) {
+            localRecyclerView.setVisibility(View.VISIBLE);
+            localEmptyTextView.setVisibility(View.GONE);
+
+            localRecyclerView.setAdapter(new LocalPhotosAdapter(photos, this));
+        } else {
+            localRecyclerView.setVisibility(View.GONE);
+            localEmptyTextView.setVisibility(View.VISIBLE);
+        }
+
+        localProgressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -88,8 +99,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         intent.putExtra(Constants.PHOTO_KEY, photoPosition);
 
         this.startActivity(intent);
-
-        this.startActivity(intent);
     }
 
     @Override
@@ -104,6 +113,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         }
 
         this.localProgressBar.setVisibility(View.VISIBLE);
+        this.localRecyclerView.setVisibility(View.VISIBLE);
+        this.localEmptyTextView.setVisibility(View.GONE);
         this.presenter.fetchLocalPhotos();
     }
 

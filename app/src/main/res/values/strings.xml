@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Photo Library</string>
+
+    <string name="cloud_download">Cloud Download</string>
+
+    <string name="local_photos_default_message">No local photos available. Please download a cloud photo first.</string>
+    
 </resources>
