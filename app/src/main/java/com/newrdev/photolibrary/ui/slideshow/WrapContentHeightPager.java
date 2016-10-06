@@ -3,6 +3,7 @@ package com.newrdev.photolibrary.ui.slideshow;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.View;
 
 /**
  * Created by newrdev on 10/5/16.
@@ -33,10 +34,5 @@ public class WrapContentHeightPager extends ViewPager {
             e.printStackTrace();
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    public void reMeasureCurrentPage(int position) {
-        mCurrentPagePosition = position;
-        requestLayout();
     }
 }
