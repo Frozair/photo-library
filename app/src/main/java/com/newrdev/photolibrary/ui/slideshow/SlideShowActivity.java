@@ -1,8 +1,12 @@
 package com.newrdev.photolibrary.ui.slideshow;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.newrdev.photolibrary.PhotoLibraryApplication;
 import com.newrdev.photolibrary.R;
 import com.newrdev.photolibrary.data.model.Album;
 import com.newrdev.photolibrary.data.model.Photo;
@@ -39,6 +44,7 @@ public class SlideShowActivity extends AppCompatActivity implements ViewPager.On
 
     private SlideShowPresenter presenter;
     private List<Photo> photos;
+    private final static int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +85,44 @@ public class SlideShowActivity extends AppCompatActivity implements ViewPager.On
     }
 
     @OnClick(R.id.downloadCloudButton)
-    public void downloadPhoto() {
-        int pos = pager.getCurrentItem();
-        this.presenter.downloadAndSavePhoto(this.photos.get(pos));
+    public void downloadCurrentPhoto() {
+
+        int permission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED)
+        {
+            if(permission == PackageManager.PERMISSION_DENIED)
+            {
+                notifyPermissionIsRequired();
+            } else {
+                requestPermissions(new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE },
+                        REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
+            }
+        } else {
+            int pos = pager.getCurrentItem();
+            this.presenter.downloadAndSavePhoto(this.photos.get(pos));
+        }
+    }
+
+    private void notifyPermissionIsRequired() {
+        PhotoLibraryApplication.getInstance().showLongToast("Storage permission is required. Please enable to save this photo!");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    downloadCurrentPhoto();
+                } else {
+                    notifyPermissionIsRequired();
+                }
+                return;
+            }
+        }
     }
 
     @Override
@@ -104,7 +145,7 @@ public class SlideShowActivity extends AppCompatActivity implements ViewPager.On
         Photo photo = photos.get(position);
         titleTextView.setText(photo.getTitle());
 
-        getSupportActionBar().setTitle("Photo ID: " + photo.getId());
+        getSupportActionBar().setTitle("Photo " + photo.getId());
     }
 
     @Override

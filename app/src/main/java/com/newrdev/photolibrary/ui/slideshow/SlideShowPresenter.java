@@ -45,7 +45,7 @@ public class SlideShowPresenter extends BasePresenter<SlideShowView> {
                         realm.copyToRealmOrUpdate(photo);
 
                         PhotoLibraryApplication.getInstance()
-                                .showLongToast("Photo ID: " + photo.getId() + " download complete!");
+                                .showLongToast("Photo " + photo.getId() + " download complete!");
 
                         realm.commitTransaction();
                     }
