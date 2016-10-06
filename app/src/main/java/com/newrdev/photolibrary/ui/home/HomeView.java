@@ -15,4 +15,5 @@ public interface HomeView {
     void onLocalPhotosFetched(List<Photo> photos);
     void onAlbumClick(Album album);
     void onPhotoClick(List<Photo> photos, int photoPosition);
+    void onCloudFetchError();
 }

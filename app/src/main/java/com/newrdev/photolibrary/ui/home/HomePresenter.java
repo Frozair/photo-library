@@ -43,7 +43,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
         @Override
         public void onError(Throwable e) {
-
+            HomePresenter.this.view().onCloudFetchError();
         }
 
         @Override
